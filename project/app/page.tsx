@@ -1,5 +1,5 @@
-import Header from "../src/components/Header";
+import Mainpage from "@/components/Mainpage/Mainpage";
 
 export default function Page() {
-  return <Header />;
+  return <Mainpage />;
 }
