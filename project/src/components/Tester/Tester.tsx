@@ -39,12 +39,12 @@ export default function Tester() {
       <div
         className={`w-300 text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "opacity-0 absolute pointer-events-none" : ""}`}
       >
-        {<Wpm text={phrase[0]} />}
+        {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
       </div>
       <div
         className={`w-300 text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "" : "opacity-0 absolute pointer-events-none"}`}
       >
-        {<Wpm text={phrase[1]} />}
+        {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
       </div>
 
       <div

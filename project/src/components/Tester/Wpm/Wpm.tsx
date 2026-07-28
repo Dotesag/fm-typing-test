@@ -1,15 +1,30 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { MainContext } from "../../Mainpage/Mainpage";
 
 type WpmProp = {
   text: string;
+  isActive: boolean;
 };
 
-export default function Wpm({ text }: WpmProp) {
-  const { difficulty, mode, isStarted, setIsStarted } = useContext(MainContext);
+export default function Wpm({ text, isActive }: WpmProp) {
+  const {
+    difficulty,
+    mode,
+    isStarted,
+    setIsStarted,
+    setWPM,
+    WPM,
+    setAccuracy,
+    accuracy,
+    setTime,
+    time,
+  } = useContext(MainContext);
 
   const [phrase, setPhrase] = useState([]);
   const [cursor, setCursor] = useState(0);
+  const [errors, setErrors] = useState([]);
+  const cursorRef = useRef(0);
+  const errorsRef = useRef([]);
 
   useEffect(() => {
     if (text) {
@@ -18,16 +33,52 @@ export default function Wpm({ text }: WpmProp) {
   }, [text]);
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyPress);
-    return () => document.removeEventListener("keydown", handleKeyPress);
+    if (isActive) {
+      document.addEventListener("keydown", handleKeyPress);
+      return () => document.removeEventListener("keydown", handleKeyPress);
+    }
   });
 
+  useEffect(() => {
+    if (!isStarted) {
+      setCursor(0);
+      setErrors([]);
+      cursorRef.current = 0;
+      errorsRef.current = [];
+      setAccuracy(0)
+    }
+  }, [isStarted]);
+
   const handleKeyPress = (event) => {
+    if (isStarted && event.key) {
+      if (event.key === "Enter") {
+        setIsStarted(true);
+      }
+      if (event.key === "Backspace") {
+        if (cursorRef.current > 0) {
+          errorsRef.current = errorsRef.current.filter(
+            (a) => a != cursorRef.current - 1,
+          );
+          cursorRef.current -= 1;
+        }
+      } else {
+        if (event.key.length == 1) {
+          const isError = event.key != phrase[cursorRef.current];
+          if (isError) {
+            errorsRef.current = [...errorsRef.current, cursorRef.current];
+          }
+          cursorRef.current += 1;
+        }
+      }
+      console.log(errorsRef.current, cursorRef.current);
+      if (errorsRef.current && cursorRef.current > 0) {
+        setAccuracy((1 - errorsRef.current.length / cursorRef.current) * 100);
+      }
+      setCursor(cursorRef.current);
+      setErrors(errorsRef.current);
+    }
     if (!isStarted && event.key === "Enter") {
       setIsStarted(true);
-    }
-    if (isStarted && event.key === phrase[cursor]) {
-      setCursor((prev) => prev + 1);
     }
   };
 
@@ -39,7 +90,13 @@ export default function Wpm({ text }: WpmProp) {
           className="p-0.2 rounded-md "
           style={{
             background: ind == cursor ? "hsl(0 0% 25%)" : "",
-            color: ind < cursor ? "hsl(140 63% 57%)" : ""
+            color:
+              ind < cursor
+                ? errors.includes(ind)
+                  ? "hsl(354 63% 57%)"
+                  : "hsl(140 63% 57%)"
+                : "",
+            textDecorationLine: errors.includes(ind) ? "underline" : "none",
           }}
         >
           {symbol}

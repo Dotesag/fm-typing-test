@@ -21,6 +21,9 @@ export default function Mainpage() {
     difficultyButtons[0].key,
   );
   const [mode, setMode] = useState<string>(modeButtons[0].key);
+  const [WPM, setWPM] = useState<number>(0);
+  const [accuracy, setAccuracy] = useState<number>(0);
+  const [time, setTime] = useState<number>(0);
 
   return (
     <MainContext.Provider
@@ -33,6 +36,12 @@ export default function Mainpage() {
         modeButtons,
         mode,
         setMode,
+        WPM,
+        setWPM,
+        accuracy,
+        setAccuracy,
+        time,
+        setTime,
       }}
     >
       <div className="flex flex-col items-center">

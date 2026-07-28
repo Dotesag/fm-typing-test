@@ -11,25 +11,29 @@ export default function Menu() {
     mode,
     setMode,
     isStarted,
+    WPM,
+    accuracy,
+    time,
   } = useContext(MainContext);
 
   return (
     <div className="flex justify-between items-center mb-3">
       <div className="text-neutral-500 text-lg flex gap-5 items-center">
         <p>
-          WPM: <span className="text-white font-bold">N/A</span>
+          WPM: <span className="text-white font-bold">{WPM}</span>
         </p>
 
         <div className="w-px h-6 bg-neutral-700"></div>
 
         <p>
-          Accuracy: <span className="text-white font-bold">N/A</span>
+          Accuracy: {" "}
+          <span className="text-white font-bold">{Math.round(accuracy)}%</span>
         </p>
 
         <div className="w-px h-6 bg-neutral-700"></div>
 
         <p>
-          Time: <span className="text-white font-bold">N/A</span>
+          Time: <span className="text-white font-bold">{time}</span>
         </p>
       </div>
 
