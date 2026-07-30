@@ -37,18 +37,18 @@ export default function Tester() {
   return (
     <section className="relative w-full mt-8 flex flex-col items-center">
       <div
-        className={`w-300 text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "opacity-0 absolute pointer-events-none" : ""}`}
+        className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "opacity-0 absolute pointer-events-none" : ""}`}
       >
         {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
       </div>
       <div
-        className={`w-300 text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "" : "opacity-0 absolute pointer-events-none"}`}
+        className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "" : "opacity-0 absolute pointer-events-none"}`}
       >
         {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
       </div>
 
       <div
-        className={`absolute top-0 h-144 w-full flex flex-col items-center pt-36 backdrop-blur-sm
+        className={`absolute top-0 h-full w-full flex flex-col items-center pt-36 backdrop-blur-sm
           text-xl duration-200 ${isStarted ? "opacity-0 pointer-events-none" : "opacity-100"}`}
       >
         <button

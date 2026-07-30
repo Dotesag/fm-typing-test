@@ -10,6 +10,8 @@ export default function Wpm({ text, isActive }: WpmProp) {
   const {
     difficulty,
     mode,
+    isEnded,
+    setIsEnded,
     isStarted,
     setIsStarted,
     setWPM,
@@ -25,6 +27,9 @@ export default function Wpm({ text, isActive }: WpmProp) {
   const [errors, setErrors] = useState([]);
   const cursorRef = useRef(0);
   const errorsRef = useRef([]);
+  const startTimeRef = useRef<number>(0);
+  const timerRef = useRef<null | NodeJS.Timeout>(null);
+  const wordsRef = useRef<number>(0);
 
   useEffect(() => {
     if (text) {
@@ -45,7 +50,18 @@ export default function Wpm({ text, isActive }: WpmProp) {
       setErrors([]);
       cursorRef.current = 0;
       errorsRef.current = [];
-      setAccuracy(0)
+      setAccuracy(100);
+      clearInterval(timerRef.current);
+    }
+    if (isStarted && isActive) {
+      startTimeRef.current = performance.now();
+      timerRef.current = setInterval(() => {
+        setTime(performance.now() - startTimeRef.current);
+        setWPM(
+          wordsRef.current /
+            ((performance.now() - startTimeRef.current) / 1000 / 60),
+        );
+      }, 1);
     }
   }, [isStarted]);
 
@@ -54,6 +70,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
       if (event.key === "Enter") {
         setIsStarted(true);
       }
+
       if (event.key === "Backspace") {
         if (cursorRef.current > 0) {
           errorsRef.current = errorsRef.current.filter(
@@ -63,14 +80,19 @@ export default function Wpm({ text, isActive }: WpmProp) {
         }
       } else {
         if (event.key.length == 1) {
-          const isError = event.key != phrase[cursorRef.current];
-          if (isError) {
+          if (event.key == " " && phrase[cursorRef.current] == " ") {
+            wordsRef.current += 1;
+          }
+          if (event.key != phrase[cursorRef.current]) {
             errorsRef.current = [...errorsRef.current, cursorRef.current];
           }
           cursorRef.current += 1;
+          if (cursorRef.current >= phrase.length) {
+            setIsStarted(false);
+            setIsEnded(true);
+          }
         }
       }
-      console.log(errorsRef.current, cursorRef.current);
       if (errorsRef.current && cursorRef.current > 0) {
         setAccuracy((1 - errorsRef.current.length / cursorRef.current) * 100);
       }

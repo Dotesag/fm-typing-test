@@ -3,8 +3,8 @@ import Menu from "./Menu/Menu";
 
 export default function Header() {
   return (
-    <header>
-      <div className="h-35 w-300 flex items-center justify-between">
+    <header className="w-full">
+      <div className="h-35 w-full flex items-center justify-between">
         <Image
           src="/images/logo-large.svg"
           alt="logo-large"

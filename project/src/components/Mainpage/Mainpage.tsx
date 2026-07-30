@@ -17,12 +17,13 @@ export default function Mainpage() {
   ];
 
   const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [isEnded, setIsEnded] = useState<boolean>(false);
   const [difficulty, setDifficulty] = useState<string>(
     difficultyButtons[0].key,
   );
   const [mode, setMode] = useState<string>(modeButtons[0].key);
   const [WPM, setWPM] = useState<number>(0);
-  const [accuracy, setAccuracy] = useState<number>(0);
+  const [accuracy, setAccuracy] = useState<number>(100);
   const [time, setTime] = useState<number>(0);
 
   return (
@@ -30,6 +31,8 @@ export default function Mainpage() {
       value={{
         isStarted,
         setIsStarted,
+        isEnded,
+        setIsEnded,
         difficultyButtons,
         difficulty,
         setDifficulty,
@@ -44,7 +47,7 @@ export default function Mainpage() {
         setTime,
       }}
     >
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center mx-80">
         <Header />
         <Tester />
       </div>

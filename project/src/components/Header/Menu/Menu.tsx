@@ -20,20 +20,24 @@ export default function Menu() {
     <div className="flex justify-between items-center mb-3">
       <div className="text-neutral-500 text-lg flex gap-5 items-center">
         <p>
-          WPM: <span className="text-white font-bold">{WPM}</span>
+          WPM: <span className="text-white font-bold w-2">{Math.round(WPM)}</span>
         </p>
 
         <div className="w-px h-6 bg-neutral-700"></div>
 
         <p>
-          Accuracy: {" "}
-          <span className="text-white font-bold">{Math.round(accuracy)}%</span>
+          Accuracy:{" "}
+          <span className="text-white font-bold w-2">{Math.round(accuracy)}%</span>
         </p>
 
         <div className="w-px h-6 bg-neutral-700"></div>
 
         <p>
-          Time: <span className="text-white font-bold">{time}</span>
+          Time:{" "}
+          <span className="text-white font-bold">
+            {String(Math.floor(time / 1000 / 60)).padStart(2, "0")}:
+            {String(Math.floor((time / 1000) % 60)).padStart(2, "0")}
+          </span>
         </p>
       </div>
 
