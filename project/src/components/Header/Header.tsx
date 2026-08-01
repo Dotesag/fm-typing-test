@@ -1,10 +1,9 @@
 import Image from "next/image";
-import Menu from "./Menu/Menu";
 
 export default function Header() {
   return (
     <header className="w-full">
-      <div className="h-35 w-full flex items-center justify-between">
+      <div className="my-8 w-full flex items-center justify-between">
         <Image
           src="/images/logo-large.svg"
           alt="logo-large"
@@ -26,9 +25,7 @@ export default function Header() {
           </p>
         </div>
       </div>
-      <Menu />
 
-      <div className="w-full h-px bg-neutral-700"></div>
     </header>
   );
 }
