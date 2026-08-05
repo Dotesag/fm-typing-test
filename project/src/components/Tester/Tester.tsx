@@ -45,14 +45,16 @@ export default function Tester() {
         >
           {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
         </div>
+
         <div
           className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "" : "opacity-0 absolute pointer-events-none"}`}
         >
           {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
         </div>
+
         <div
-          className={`absolute top-0 h-full w-full flex flex-col items-center pt-36 backdrop-blur-sm
-            text-xl duration-200 ${isStarted ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+          className={`absolute top-0 h-full w-full flex flex-col items-center pt-36 backdrop-blur-sm 
+            text-xl ${!isStarted ? "" : "duration-300"} ${isStarted || isEnded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
         >
           <button
             className="bg-blue-600 rounded-xl p-3 mb-4 cursor-pointer"
@@ -62,6 +64,7 @@ export default function Tester() {
           </button>
           <p>Or click the text and start typing</p>
         </div>
+
         <button
           className={`bg-neutral-800 rounded-xl p-3.5 cursor-pointer flex gap-3 text-xl duration-200 ${isStarted ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           style={{}}
@@ -75,7 +78,8 @@ export default function Tester() {
             height={20}
           />
         </button>
-        {isEnded && <Result />}
+
+        <Result />
       </div>
     </section>
   );

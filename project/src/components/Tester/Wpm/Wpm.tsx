@@ -88,7 +88,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
           }
           cursorRef.current += 1;
           if (cursorRef.current >= phrase.length) {
-            // setIsStarted(false);
+            setIsStarted(false);
             setIsEnded(true);
           }
         }
