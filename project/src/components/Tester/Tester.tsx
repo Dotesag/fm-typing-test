@@ -38,46 +38,45 @@ export default function Tester() {
 
   return (
     <section className="relative w-full mt-8 flex flex-col items-center">
-      <Menu />
-      <div className="relative w-full mt-7 flex flex-col items-center">
-        <div
-          className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "opacity-0 absolute pointer-events-none" : ""}`}
-        >
-          {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
-        </div>
-
-        <div
-          className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "" : "opacity-0 absolute pointer-events-none"}`}
-        >
-          {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
-        </div>
-
-        <div
-          className={`absolute top-0 h-full w-full flex flex-col items-center pt-36 backdrop-blur-sm 
-            text-xl ${!isStarted ? "" : "duration-300"} ${isStarted || isEnded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-        >
-          <button
-            className="bg-blue-600 rounded-xl p-3 mb-4 cursor-pointer"
-            onClick={() => setIsStarted(true)}
+      <div className="relative w-full flex flex-col items-center">
+        <Menu />
+        <div className="relative w-full mt-7 flex flex-col items-center">
+          <div
+            className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "opacity-0 absolute pointer-events-none" : ""}`}
           >
-            Start typing test
+            {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
+          </div>
+          <div
+            className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "" : "opacity-0 absolute pointer-events-none"}`}
+          >
+            {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
+          </div>
+          <div
+            className={`absolute top-0 h-full w-full flex flex-col items-center pt-36 backdrop-blur-sm
+              text-xl ${!isStarted ? "" : "duration-300"} ${isStarted || isEnded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+          >
+            <button
+              className="bg-blue-600 rounded-xl p-3 mb-4 cursor-pointer"
+              onClick={() => setIsStarted(true)}
+            >
+              Start typing test
+            </button>
+            <p>Or click the text and start typing</p>
+          </div>
+          <button
+            className={`bg-neutral-800 rounded-xl p-3.5 cursor-pointer flex gap-3 text-xl duration-200 ${isStarted ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            style={{}}
+            onClick={() => setIsStarted(false)}
+          >
+            Restart test
+            <Image
+              src={"images/icon-restart.svg"}
+              alt="restart"
+              width={20}
+              height={20}
+            />
           </button>
-          <p>Or click the text and start typing</p>
         </div>
-
-        <button
-          className={`bg-neutral-800 rounded-xl p-3.5 cursor-pointer flex gap-3 text-xl duration-200 ${isStarted ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-          style={{}}
-          onClick={() => setIsStarted(false)}
-        >
-          Restart test
-          <Image
-            src={"images/icon-restart.svg"}
-            alt="restart"
-            width={20}
-            height={20}
-          />
-        </button>
 
         <Result />
       </div>
