@@ -45,12 +45,16 @@ export default function Wpm({ text, isActive }: WpmProp) {
   });
 
   useEffect(() => {
-    if (!isStarted) {
+    if (!isStarted && !isEnded) {
       setCursor(0);
       setErrors([]);
-      cursorRef.current = 0;
+      cursorRef.current = 0; 
       errorsRef.current = [];
       setAccuracy(100);
+      clearInterval(timerRef.current);
+      setTime(0);
+    }
+    if (isEnded && isActive) {
       clearInterval(timerRef.current);
     }
     if (isStarted && isActive) {
@@ -63,10 +67,10 @@ export default function Wpm({ text, isActive }: WpmProp) {
         );
       }, 1);
     }
-  }, [isStarted]);
+  }, [isStarted, isEnded]);
 
   const handleKeyPress = (event) => {
-    if (isStarted && event.key) {
+    if (isStarted && !isEnded && event.key) {
       if (event.key === "Enter") {
         setIsStarted(true);
       }

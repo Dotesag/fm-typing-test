@@ -3,7 +3,8 @@ import Image from "next/image";
 import { MainContext } from "../../Mainpage/Mainpage";
 
 export default function Result() {
-  const { setIsStarted, setIsEnded, isEnded } = useContext(MainContext);
+  const { setIsStarted, setIsEnded, isEnded, WPM, accuracy } =
+    useContext(MainContext);
 
   return (
     <div
@@ -28,12 +29,15 @@ export default function Result() {
       <div className="flex gap-5 mb-10">
         <div className="result-box">
           <p>WPM:</p>
+          <p className="text-neutral-0 font-bold">{Math.round(WPM)}</p>
         </div>
         <div className="result-box">
           <p>Accuracy:</p>
+          <p className="text-neutral-0 font-bold">{Math.round(accuracy)}%</p>
         </div>
         <div className="result-box">
           <p>Characters</p>
+          <p className="text-neutral-0 font-bold">76</p>
         </div>
       </div>
 

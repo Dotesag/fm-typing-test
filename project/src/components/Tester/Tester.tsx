@@ -6,7 +6,7 @@ import Menu from "./Menu/Menu";
 import Result from "./Result/Result";
 
 export default function Tester() {
-  const { difficulty, mode, isStarted, setIsStarted, isEnded } =
+  const { difficulty, mode, isStarted, setIsStarted, isEnded, setIsEnded } =
     useContext(MainContext);
 
   const [phrase, setPhrase] = useState<string | any>([]);
@@ -53,7 +53,7 @@ export default function Tester() {
           </div>
           <div
             className={`absolute top-0 h-full w-full flex flex-col items-center pt-36 backdrop-blur-sm
-              text-xl ${!isStarted ? "" : "duration-300"} ${isStarted || isEnded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+              text-xl ${!isStarted ? "" : "duration-300"} ${!isStarted && !isEnded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <button
               className="bg-blue-600 rounded-xl p-3 mb-4 cursor-pointer"
@@ -66,7 +66,10 @@ export default function Tester() {
           <button
             className={`bg-neutral-800 rounded-xl p-3.5 cursor-pointer flex gap-3 text-xl duration-200 ${isStarted ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             style={{}}
-            onClick={() => setIsStarted(false)}
+            onClick={() => {
+              setIsStarted(false);
+              setIsEnded(false);
+            }}
           >
             Restart test
             <Image

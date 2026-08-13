@@ -18,5 +18,5 @@
 }
 
 .result-box {
-  @apply h-22 w-38 border-[2px] border-neutral-800 rounded-md p-4 text-neutral-400;
+  @apply h-22 w-38 border-[2px] border-neutral-800 rounded-md text-neutral-400 px-4 flex flex-col justify-evenly;
 }
