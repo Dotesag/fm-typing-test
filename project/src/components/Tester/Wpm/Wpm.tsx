@@ -18,13 +18,15 @@ export default function Wpm({ text, isActive }: WpmProp) {
     WPM,
     setAccuracy,
     accuracy,
+    cursor,
+    setCursor,
+    errors,
+    setErrors,
     setTime,
     time,
   } = useContext(MainContext);
 
   const [phrase, setPhrase] = useState([]);
-  const [cursor, setCursor] = useState(0);
-  const [errors, setErrors] = useState([]);
   const cursorRef = useRef(0);
   const errorsRef = useRef([]);
   const startTimeRef = useRef<number>(0);
@@ -48,16 +50,17 @@ export default function Wpm({ text, isActive }: WpmProp) {
     if (!isStarted && !isEnded) {
       setCursor(0);
       setErrors([]);
-      cursorRef.current = 0; 
+      cursorRef.current = 0;
       errorsRef.current = [];
       setAccuracy(100);
       clearInterval(timerRef.current);
       setTime(0);
+      wordsRef.current = 0;
     }
     if (isEnded && isActive) {
       clearInterval(timerRef.current);
     }
-    if (isStarted && isActive) {
+    if (isStarted && !isEnded && isActive) {
       startTimeRef.current = performance.now();
       timerRef.current = setInterval(() => {
         setTime(performance.now() - startTimeRef.current);
@@ -70,41 +73,46 @@ export default function Wpm({ text, isActive }: WpmProp) {
   }, [isStarted, isEnded]);
 
   const handleKeyPress = (event) => {
-    if (isStarted && !isEnded && event.key) {
-      if (event.key === "Enter") {
+    if (isActive) {
+      if (isStarted && !isEnded && event.key) {
+        if (event.key === "Enter") {
+          setIsStarted(true);
+        }
+
+        if (event.key === "Backspace") {
+          if (cursorRef.current > 0) {
+            errorsRef.current = errorsRef.current.filter(
+              (a) => a != cursorRef.current - 1,
+            );
+            cursorRef.current -= 1;
+          }
+        } else {
+          if (event.key.length == 1) {
+            if (
+              (event.key == " " && phrase[cursorRef.current] == " ") ||
+              phrase.length == cursorRef.current + 1
+            ) {
+              wordsRef.current += 1;
+            }
+            if (event.key != phrase[cursorRef.current]) {
+              errorsRef.current = [...errorsRef.current, cursorRef.current];
+            }
+            cursorRef.current += 1;
+            if (cursorRef.current >= phrase.length) {
+              setIsStarted(false);
+              setIsEnded(true);
+            }
+          }
+        }
+        if (errorsRef.current && cursorRef.current > 0) {
+          setAccuracy((1 - errorsRef.current.length / cursorRef.current) * 100);
+        }
+        setCursor(cursorRef.current);
+        setErrors(errorsRef.current);
+      }
+      if (!isStarted && !isEnded && event.key === "Enter") {
         setIsStarted(true);
       }
-
-      if (event.key === "Backspace") {
-        if (cursorRef.current > 0) {
-          errorsRef.current = errorsRef.current.filter(
-            (a) => a != cursorRef.current - 1,
-          );
-          cursorRef.current -= 1;
-        }
-      } else {
-        if (event.key.length == 1) {
-          if (event.key == " " && phrase[cursorRef.current] == " ") {
-            wordsRef.current += 1;
-          }
-          if (event.key != phrase[cursorRef.current]) {
-            errorsRef.current = [...errorsRef.current, cursorRef.current];
-          }
-          cursorRef.current += 1;
-          if (cursorRef.current >= phrase.length) {
-            setIsStarted(false);
-            setIsEnded(true);
-          }
-        }
-      }
-      if (errorsRef.current && cursorRef.current > 0) {
-        setAccuracy((1 - errorsRef.current.length / cursorRef.current) * 100);
-      }
-      setCursor(cursorRef.current);
-      setErrors(errorsRef.current);
-    }
-    if (!isStarted && event.key === "Enter") {
-      setIsStarted(true);
     }
   };
 

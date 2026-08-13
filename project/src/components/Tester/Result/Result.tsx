@@ -3,7 +3,7 @@ import Image from "next/image";
 import { MainContext } from "../../Mainpage/Mainpage";
 
 export default function Result() {
-  const { setIsStarted, setIsEnded, isEnded, WPM, accuracy } =
+  const { setIsStarted, setIsEnded, isEnded, WPM, cursor, errors, accuracy } =
     useContext(MainContext);
 
   return (
@@ -37,12 +37,19 @@ export default function Result() {
         </div>
         <div className="result-box">
           <p>Characters</p>
-          <p className="text-neutral-0 font-bold">76</p>
+          <p className="text-neutral-400 font-bold">
+            <span className="text-green-500">{cursor - errors.length}</span>
+            {errors.length > 0 && (
+              <span>
+                /<span className="text-red-500">{errors.length}</span>
+              </span>
+            )}
+          </p>
         </div>
       </div>
 
       <button
-        className="bg-white text-neutral-900 p-4 rounded-xl flex items-center gap-2 font-semibold"
+        className="bg-white text-neutral-900 p-4 rounded-xl flex items-center gap-2 font-semibold cursor-pointer"
         onClick={() => {
           setIsStarted(false);
           setIsEnded(false);

@@ -24,6 +24,9 @@ export default function Mainpage() {
   const [mode, setMode] = useState<string>(modeButtons[0].key);
   const [WPM, setWPM] = useState<number>(0);
   const [accuracy, setAccuracy] = useState<number>(100);
+  const [cursor, setCursor] = useState(0);
+  const [errors, setErrors] = useState([]);
+
   const [time, setTime] = useState<number>(0);
 
   return (
@@ -43,6 +46,10 @@ export default function Mainpage() {
         setWPM,
         accuracy,
         setAccuracy,
+        cursor,
+        setCursor,
+        errors,
+        setErrors,
         time,
         setTime,
       }}
