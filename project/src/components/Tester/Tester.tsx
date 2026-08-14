@@ -41,15 +41,17 @@ export default function Tester() {
       <div className="relative w-full flex flex-col items-center">
         <Menu />
         <div className="relative w-full mt-7 flex flex-col items-center">
-          <div
-            className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "opacity-0 absolute pointer-events-none" : ""}`}
-          >
-            {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
-          </div>
-          <div
-            className={`text-4xl/snug text-neutral-400 m-4 duration-300 ${phraseCount % 2 ? "" : "opacity-0 absolute pointer-events-none"}`}
-          >
-            {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
+          <div className="grid justify-items-center">
+            <div
+              className={`text-4xl/snug text-neutral-400 m-4 duration-300 col-start-1 row-start-1 ${phraseCount % 2 ? "opacity-0 pointer-events-none" : ""}`}
+            >
+              {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
+            </div>
+            <div
+              className={`text-4xl/snug text-neutral-400 m-4 duration-300 col-start-1 row-start-1 ${phraseCount % 2 ? "" : "opacity-0 pointer-events-none"}`}
+            >
+              {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
+            </div>
           </div>
           <div
             className={`absolute top-0 h-full w-full flex flex-col items-center pt-36 backdrop-blur-sm
@@ -80,7 +82,6 @@ export default function Tester() {
             />
           </button>
         </div>
-
         <Result />
       </div>
     </section>

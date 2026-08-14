@@ -54,7 +54,7 @@ export default function Mainpage() {
         setTime,
       }}
     >
-      <div className="flex flex-col items-center mx-80">
+      <div className="flex flex-col items-center sm:mx-80">
         <Header />
         <Tester />
       </div>

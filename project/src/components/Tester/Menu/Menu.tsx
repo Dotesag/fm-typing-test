@@ -14,10 +14,13 @@ export default function Menu() {
     WPM,
     accuracy,
     time,
+    isEnded,
   } = useContext(MainContext);
 
   return (
-    <div className=" w-full">
+    <div
+      className={`w-full ${!isEnded ? "" : "duration-300 invisible pointer-events-none"}`}
+    >
       <div className="flex justify-between items-center mb-3">
         <div className="text-neutral-500 text-lg flex gap-5 items-center">
           <p className="w-20 text-nowrap">

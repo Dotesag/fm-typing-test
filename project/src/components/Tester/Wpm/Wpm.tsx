@@ -75,10 +75,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
   const handleKeyPress = (event) => {
     if (isActive) {
       if (isStarted && !isEnded && event.key) {
-        if (event.key === "Enter") {
-          setIsStarted(true);
-        }
-
+        
         if (event.key === "Backspace") {
           if (cursorRef.current > 0) {
             errorsRef.current = errorsRef.current.filter(
@@ -111,6 +108,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
         setErrors(errorsRef.current);
       }
       if (!isStarted && !isEnded && event.key === "Enter") {
+        event.preventDefault();
         setIsStarted(true);
       }
     }

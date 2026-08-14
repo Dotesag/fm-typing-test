@@ -20,3 +20,32 @@
 .result-box {
   @apply h-22 w-38 border-[2px] border-neutral-800 rounded-md text-neutral-400 px-4 flex flex-col justify-evenly;
 }
+
+@theme {
+  --animate-pop: pop 0.4s ease-out;
+
+  @keyframes pop {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+@theme {
+  --animate-blink-delayed: blink 2s -1.2s ease-in-out infinite alternate;
+  --animate-blink: blink 2s ease-in-out infinite alternate;
+
+  @keyframes blink {
+    0% {
+      transform: scale(1);
+      opacity: 0.65;
+    }
+    100% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+}
