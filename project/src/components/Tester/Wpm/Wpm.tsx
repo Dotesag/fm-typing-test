@@ -48,14 +48,14 @@ export default function Wpm({ text, isActive }: WpmProp) {
 
   useEffect(() => {
     if (!isStarted && !isEnded) {
-      setCursor(0);
-      setErrors([]);
-      cursorRef.current = 0;
-      errorsRef.current = [];
-      setAccuracy(100);
-      clearInterval(timerRef.current);
-      setTime(0);
-      wordsRef.current = 0;
+        setCursor(0);
+        setErrors([]);
+        cursorRef.current = 0;
+        errorsRef.current = [];
+        setAccuracy(100);
+        clearInterval(timerRef.current);
+        setTime(0);
+        wordsRef.current = 0;
     }
     if (isEnded && isActive) {
       clearInterval(timerRef.current);
@@ -75,7 +75,6 @@ export default function Wpm({ text, isActive }: WpmProp) {
   const handleKeyPress = (event) => {
     if (isActive) {
       if (isStarted && !isEnded && event.key) {
-        
         if (event.key === "Backspace") {
           if (cursorRef.current > 0) {
             errorsRef.current = errorsRef.current.filter(

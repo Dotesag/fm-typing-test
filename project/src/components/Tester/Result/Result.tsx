@@ -6,6 +6,20 @@ export default function Result() {
   const { setIsStarted, setIsEnded, isEnded, WPM, cursor, errors, accuracy } =
     useContext(MainContext);
 
+  const [showedWPM, setShowedWPM] = useState<number>(WPM);
+  const [showedAccuracy, setShowedAccuracy] = useState<number>(accuracy);
+  const [showedErrors, setShowedErrors] = useState<Array<number>>(errors);
+  const [showedCursor, setShowedCursor] = useState<number>(cursor);
+
+  useEffect(() => {
+    if (isEnded) {
+      setShowedWPM(WPM);
+      setShowedAccuracy(accuracy);
+      setShowedErrors(errors);
+      setShowedCursor(cursor);
+    }
+  }, [isEnded]);
+
   return (
     <div
       className={`absolute top-0 h-full w-full flex flex-col items-center pt-5 bg-neutral-900
@@ -38,19 +52,28 @@ export default function Result() {
       <div className="flex gap-5 mb-10">
         <div className="result-box">
           <p>WPM:</p>
-          <p className="text-neutral-0 font-bold">{Math.round(WPM)}</p>
+          <p className="text-neutral-0 font-bold">{Math.round(showedWPM)}</p>
         </div>
         <div className="result-box">
           <p>Accuracy:</p>
-          <p className="text-neutral-0 font-bold">{Math.round(accuracy)}%</p>
+          <p
+            className="text-neutral-0 font-bold"
+            style={{
+              color: `hsl(${(Math.max(showedAccuracy, 70) - 70) * 4.8666 - 6}, 63%, 57%)`,
+            }}
+          >
+            {Math.round(showedAccuracy)}%
+          </p>
         </div>
         <div className="result-box">
           <p>Characters</p>
           <p className="text-neutral-400 font-bold">
-            <span className="text-green-500">{cursor - errors.length}</span>
-            {errors.length > 0 && (
+            <span className="text-green-500">
+              {showedCursor - showedErrors.length}
+            </span>
+            {showedErrors.length > 0 && (
               <span>
-                /<span className="text-red-500">{errors.length}</span>
+                /<span className="text-red-500">{showedErrors.length}</span>
               </span>
             )}
           </p>
