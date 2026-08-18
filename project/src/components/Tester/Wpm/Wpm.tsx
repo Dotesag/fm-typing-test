@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import { MainContext } from "../../Mainpage/Mainpage";
+import CryptoJS from "crypto-js";
 
 type WpmProp = {
   text: string;
@@ -24,6 +25,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
     setErrors,
     setTime,
     time,
+    setBestWPM,
   } = useContext(MainContext);
 
   const [phrase, setPhrase] = useState([]);
@@ -48,18 +50,16 @@ export default function Wpm({ text, isActive }: WpmProp) {
 
   useEffect(() => {
     if (!isStarted && !isEnded) {
-        setCursor(0);
-        setErrors([]);
-        cursorRef.current = 0;
-        errorsRef.current = [];
-        setAccuracy(100);
-        clearInterval(timerRef.current);
-        setTime(0);
-        wordsRef.current = 0;
-    }
-    if (isEnded && isActive) {
+      setCursor(0);
+      setErrors([]);
+      cursorRef.current = 0;
+      errorsRef.current = [];
+      setAccuracy(100);
       clearInterval(timerRef.current);
+      setTime(0);
+      wordsRef.current = 0;
     }
+
     if (isStarted && !isEnded && isActive) {
       startTimeRef.current = performance.now();
       timerRef.current = setInterval(() => {
@@ -95,8 +95,31 @@ export default function Wpm({ text, isActive }: WpmProp) {
             }
             cursorRef.current += 1;
             if (cursorRef.current >= phrase.length) {
+              const finalWPM =
+                wordsRef.current /
+                ((performance.now() - startTimeRef.current) / 1000 / 60);
+              setWPM(finalWPM);
               setIsStarted(false);
               setIsEnded(true);
+              clearInterval(timerRef.current);
+              try {
+                const decryptedStorage = CryptoJS.AES.decrypt(
+                  localStorage.getItem("personal best"),
+                  "SuperSecretKey",
+                );
+                const prevBest =
+                  Number(decryptedStorage.toString(CryptoJS.enc.Utf8)) || 0;
+                if (finalWPM > prevBest) {
+                  setBestWPM(finalWPM);
+                  const encrypted = CryptoJS.AES.encrypt(
+                    String(finalWPM),
+                    "SuperSecretKey",
+                  ).toString();
+                  localStorage.setItem("personal best", encrypted);
+                }
+              } catch (error) {
+                console.log(error);
+              }
             }
           }
         }
