@@ -94,7 +94,11 @@ export default function Wpm({ text, isActive }: WpmProp) {
               errorsRef.current = [...errorsRef.current, cursorRef.current];
             }
             cursorRef.current += 1;
-            if (cursorRef.current >= phrase.length) {
+            if (
+              cursorRef.current >= phrase.length ||
+              (mode === "timed" &&
+                performance.now() - startTimeRef.current > 60 * 1000)
+            ) {
               const finalWPM =
                 wordsRef.current /
                 ((performance.now() - startTimeRef.current) / 1000 / 60);

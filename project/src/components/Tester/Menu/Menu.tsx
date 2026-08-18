@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 
 import { MainContext } from "@/components/Mainpage/Mainpage";
+import { timeEnd } from "node:console";
 
 export default function Menu() {
   const {
@@ -17,6 +18,16 @@ export default function Menu() {
     isEnded,
   } = useContext(MainContext);
 
+  const [showingTime, setShowingTime] = useState(time);
+
+  useEffect(() => {
+    if (mode === "timed") {
+      setShowingTime(60 * 1000 - time);
+    } else {
+      setShowingTime(time);
+    }
+  }, [time]);
+
   return (
     <div
       className={`w-full ${!isEnded ? "" : "duration-300 invisible pointer-events-none"}`}
@@ -27,22 +38,27 @@ export default function Menu() {
             WPM:{" "}
             <span className="text-white font-bold w-2">{Math.round(WPM)}</span>
           </p>
+
           <div className="w-px h-6 bg-neutral-700"></div>
+
           <p className="w-37 text-nowrap">
             Accuracy:{" "}
             <span className="text-white font-bold w-2">
               {Math.round(accuracy)}%
             </span>
           </p>
+
           <div className="w-px h-6 bg-neutral-700"></div>
+
           <p>
             Time:{" "}
             <span className="text-white font-bold">
-              {String(Math.floor(time / 1000 / 60)).padStart(2, "0")}:
-              {String(Math.floor((time / 1000) % 60)).padStart(2, "0")}
+              {String(Math.floor(showingTime / 1000 / 60)).padStart(2, "0")}:
+              {String(Math.floor((showingTime / 1000) % 60)).padStart(2, "0")}
             </span>
           </p>
         </div>
+
         <div className="flex gap-4 items-center">
           <div className="flex gap-4 items-center">
             <p className="text-neutral-500">Difficulty:</p>
