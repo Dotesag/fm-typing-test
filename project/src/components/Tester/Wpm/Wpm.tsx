@@ -26,6 +26,8 @@ export default function Wpm({ text, isActive }: WpmProp) {
     setTime,
     time,
     setBestWPM,
+    prevBest,
+    setPrevBest,
   } = useContext(MainContext);
 
   const [phrase, setPhrase] = useState([]);
@@ -103,17 +105,20 @@ export default function Wpm({ text, isActive }: WpmProp) {
                 wordsRef.current /
                 ((performance.now() - startTimeRef.current) / 1000 / 60);
               setWPM(finalWPM);
-              setIsStarted(false);
-              setIsEnded(true);
               clearInterval(timerRef.current);
               try {
-                const decryptedStorage = CryptoJS.AES.decrypt(
-                  localStorage.getItem("personal best"),
-                  "SuperSecretKey",
-                );
-                const prevBest =
-                  Number(decryptedStorage.toString(CryptoJS.enc.Utf8)) || 0;
-                if (finalWPM > prevBest) {
+                let localPrevBest = 0;
+                if (localStorage.getItem("personal best")) {
+                  const decryptedStorage = CryptoJS.AES.decrypt(
+                    localStorage.getItem("personal best"),
+                    "SuperSecretKey",
+                  );
+                  localPrevBest =
+                    Number(decryptedStorage.toString(CryptoJS.enc.Utf8)) || 0;
+                }
+                setPrevBest(localPrevBest);
+
+                if (finalWPM > localPrevBest) {
                   setBestWPM(finalWPM);
                   const encrypted = CryptoJS.AES.encrypt(
                     String(finalWPM),
@@ -124,6 +129,8 @@ export default function Wpm({ text, isActive }: WpmProp) {
               } catch (error) {
                 console.log(error);
               }
+              setIsStarted(false);
+              setIsEnded(true);
             }
           }
         }

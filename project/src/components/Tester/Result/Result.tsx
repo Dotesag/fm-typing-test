@@ -1,10 +1,20 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import Image from "next/image";
 import { MainContext } from "../../Mainpage/Mainpage";
+import JSConfetti from "js-confetti";
 
 export default function Result() {
-  const { setIsStarted, setIsEnded, isEnded, WPM, cursor, errors, accuracy } =
-    useContext(MainContext);
+  const {
+    setIsStarted,
+    setIsEnded,
+    isEnded,
+    WPM,
+    cursor,
+    errors,
+    accuracy,
+    prevBest,
+  } = useContext(MainContext);
+  const jsConfettiRef = useRef<JSConfetti | null>(null);
 
   const [showedWPM, setShowedWPM] = useState<number>(WPM);
   const [showedAccuracy, setShowedAccuracy] = useState<number>(accuracy);
@@ -17,6 +27,12 @@ export default function Result() {
       setShowedAccuracy(accuracy);
       setShowedErrors(errors);
       setShowedCursor(cursor);
+      if (prevBest != 0 && WPM > prevBest) {
+        if (!jsConfettiRef.current) {
+          jsConfettiRef.current = new JSConfetti();
+        }
+        jsConfettiRef.current.addConfetti();
+      }
     }
   }, [isEnded]);
 
@@ -25,27 +41,48 @@ export default function Result() {
       className={`absolute top-0 h-full w-full flex flex-col items-center pt-5 bg-neutral-900
             text-xl duration-200 ${isEnded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
-      <div
-        className={`p-4 rounded-full bg-green-500/15 ${isEnded ? "animate-pop" : ""}`}
-      >
+      {!(prevBest != 0 && WPM > prevBest) ? (
         <div
-          className={`p-3.5 rounded-full bg-green-500/20 ${isEnded ? "animate-pop" : ""}`}
+          className={`p-4 rounded-full bg-green-500/15 ${isEnded ? "animate-pop" : ""}`}
         >
-          <Image
-            className={`w-14 opacity-100 ${isEnded ? "animate-pop" : ""}`}
-            src="/images/icon-completed.svg"
-            alt="icon-completed"
-            width={64}
-            height={64}
-            loading="eager"
-          />
+          <div
+            className={`p-3.5 rounded-full bg-green-500/20 ${isEnded ? "animate-pop" : ""}`}
+          >
+            <Image
+              className={`w-14 opacity-100 ${isEnded ? "animate-pop" : ""}`}
+              src="/images/icon-completed.svg"
+              alt="icon-completed"
+              width={64}
+              height={64}
+              loading="eager"
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <Image
+          className={`w-14 opacity-100 ${isEnded ? "animate-pop" : ""}`}
+          src="/images/icon-new-pb.svg"
+          alt="icon-new-pb"
+          width={64}
+          height={64}
+          loading="eager"
+        ></Image>
+      )}
 
       <div className="flex flex-col gap-4 my-10 items-center ">
-        <p className="text-4xl font-semibold">Baseline established!</p>
+        <p className="text-4xl font-semibold">
+          {prevBest == 0
+            ? "Baseline established!"
+            : prevBest >= WPM
+              ? "Test Complete!"
+              : "High Score Smashed!"}
+        </p>
         <p className="text-neutral-400">
-          Youʼve set the bar. Now the real challenge begins—time to beat it.
+          {prevBest == 0
+            ? "Youʼve set the bar. Now the real challenge begins—time to beat it."
+            : prevBest >= WPM
+              ? "Solid run. Keep pushing to beat your high score."
+              : "You're getting faster. That was incredible typing."}
         </p>
       </div>
 
@@ -87,7 +124,7 @@ export default function Result() {
           setIsEnded(false);
         }}
       >
-        <p>Beat this score </p>
+        <p>{prevBest >= WPM ? "Go again" : "Beat this score"} </p>
         <svg
           className="w-5 h-5 text-neutral-900"
           fill="currentColor"
@@ -98,20 +135,24 @@ export default function Result() {
         </svg>
       </button>
 
-      <Image
-        className="animate-blink-delayed absolute left-20 top-30 z-1"
-        src={"/images/pattern-star-2.svg"}
-        alt="red-star"
-        width={32}
-        height={32}
-      />
-      <Image
-        className="animate-blink absolute right-20 top-100 z-1"
-        src={"/images/pattern-star-1.svg"}
-        alt="yellow-star"
-        width={74}
-        height={74}
-      />
+      {prevBest >= WPM && (
+        <Image
+          className="animate-blink-delayed absolute left-20 top-30 z-1"
+          src={"/images/pattern-star-2.svg"}
+          alt="red-star"
+          width={32}
+          height={32}
+        />
+      )}
+      {prevBest >= WPM && (
+        <Image
+          className="animate-blink absolute right-20 top-100 z-1"
+          src={"/images/pattern-star-1.svg"}
+          alt="yellow-star"
+          width={74}
+          height={74}
+        />
+      )}
     </div>
   );
 }

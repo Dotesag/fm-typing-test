@@ -27,6 +27,7 @@ export default function Mainpage() {
   const [cursor, setCursor] = useState(0);
   const [errors, setErrors] = useState([]);
   const [bestWPM, setBestWPM] = useState(0);
+  const [prevBest, setPrevBest] = useState(0);
 
   const [time, setTime] = useState<number>(0);
 
@@ -55,6 +56,8 @@ export default function Mainpage() {
         setTime,
         bestWPM,
         setBestWPM,
+        prevBest,
+        setPrevBest,
       }}
     >
       <div className="flex flex-col items-center sm:mx-80">
