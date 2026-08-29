@@ -60,7 +60,7 @@ export default function Mainpage() {
         setPrevBest,
       }}
     >
-      <div className="flex flex-col items-center sm:mx-80">
+      <div className="flex flex-col items-center">
         <Header />
         <Tester />
       </div>

@@ -15,6 +15,9 @@
   --color-green-500: hsl(140 63% 57%);
 
   --color-yellow-400: hsl(49 85% 70%);
+
+
+  --breakpoint-lg: 66rem;
 }
 
 .result-box {
