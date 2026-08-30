@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import Image from "next/image";
 
 import { MainContext } from "@/components/Mainpage/Mainpage";
 import { timeEnd } from "node:console";
@@ -19,6 +20,8 @@ export default function Menu() {
   } = useContext(MainContext);
 
   const [showingTime, setShowingTime] = useState(time);
+
+  const [isModeSelectorActive, setIsModeSelectorActive] = useState(false);
 
   useEffect(() => {
     if (mode === "timed") {
@@ -98,6 +101,91 @@ export default function Menu() {
                   {elem.name}
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex">
+          <div className="md:hidden flex">
+            <div>
+              <button
+                onClick={() => setIsModeSelectorActive((prev) => !prev)}
+                className="border disabled:cursor-not-allowed rounded-lg w-44 py-1 duration-200 cursor-pointer text-white border-neutral-400 hover:text-blue-400 hover:border-blue-400 flex justify-center items-center gap-2"
+              >
+                {modeButtons.find((obj) => obj.key === mode).name}{" "}
+                <Image
+                  src="/images/icon-down-arrow.svg"
+                  alt="down"
+                  width={11}
+                  height={6}
+                ></Image>
+              </button>
+              <ul
+                className={`ease-in-out grid ${isModeSelectorActive ? "grid-rows-[1fr] leading-6" : "grid-rows-[0fr] pointer-events-none leading-0"} transition-[grid-template-rows] absolute z-50 duration-250 bg-neutral-800 w-44 mt-1.5 rounded-lg`}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  {modeButtons.map((elem, index) => (
+                    <div key={index}>
+                      <label
+                        className={` ${isModeSelectorActive ? "py-2 opacity-100" : "py-0 opacity-0"} duration-250 flex gap-2 px-2 items-center`}
+                      >
+                        <input
+                          type="radio"
+                          name={elem.key}
+                          checked={mode === elem.key}
+                          onChange={() => setMode(elem.key)}
+                          className={`${isModeSelectorActive ? "" : "scale-0 "} appearance-none w-4 h-4 rounded-full border border-white checked:border-blue-400 checked:border-5 duration-250 origin-center`}
+                        ></input>
+                        <p>{elem.name}</p>
+                      </label>
+                      {index != modeButtons.length - 1 && (
+                        <div className="h-px w-full bg-neutral-700"></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </ul>
+            </div>
+          </div>
+          <div className="md:hidden flex">
+            <div>
+              <button
+                onClick={() => setIsModeSelectorActive((prev) => !prev)}
+                className="border disabled:cursor-not-allowed rounded-lg w-44 py-1 duration-200 cursor-pointer text-white border-neutral-400 hover:text-blue-400 hover:border-blue-400 flex justify-center items-center gap-2"
+              >
+                {modeButtons.find((obj) => obj.key === mode).name}{" "}
+                <Image
+                  src="/images/icon-down-arrow.svg"
+                  alt="down"
+                  width={11}
+                  height={6}
+                ></Image>
+              </button>
+              <ul
+                className={`ease-in-out grid ${isModeSelectorActive ? "grid-rows-[1fr] leading-6" : "grid-rows-[0fr] pointer-events-none leading-0"} transition-[grid-template-rows] absolute z-50 duration-250 bg-neutral-800 w-44 mt-1.5 rounded-lg`}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  {modeButtons.map((elem, index) => (
+                    <div key={index}>
+                      <label
+                        className={` ${isModeSelectorActive ? "py-2 opacity-100" : "py-0 opacity-0"} duration-250 flex gap-2 px-2 items-center`}
+                      >
+                        <input
+                          type="radio"
+                          name={elem.key}
+                          checked={mode === elem.key}
+                          onChange={() => setMode(elem.key)}
+                          className={`${isModeSelectorActive ? "" : "scale-0 "} appearance-none w-4 h-4 rounded-full border border-white checked:border-blue-400 checked:border-5 duration-250 origin-center`}
+                        ></input>
+                        <p>{elem.name}</p>
+                      </label>
+                      {index != modeButtons.length - 1 && (
+                        <div className="h-px w-full bg-neutral-700"></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </ul>
             </div>
           </div>
         </div>

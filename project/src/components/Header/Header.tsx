@@ -48,8 +48,8 @@ export default function Header() {
             height={18}
             className="w-[20px] h-auto"
           />
-          <p className="font-normal text-neutral-500 text-lg lg:normal-case capitalize">
-            <span className="md:inline hidden">Personal</span>best: <span className="text-white ">{Math.round(bestWPM)} WPM</span>
+          <p className="font-normal text-neutral-500 text-lg md:normal-case capitalize">
+            <span className="md:inline hidden">Personal</span> best: <span className="text-white ">{Math.round(bestWPM)} WPM</span>
           </p>
         </div>
       </div>
