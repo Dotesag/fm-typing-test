@@ -37,11 +37,11 @@ export default function Tester() {
   }, [mode, difficulty, isStarted]);
 
   return (
-    <section className="relative w-full mt-8 flex flex-col items-center max-w-330 px-5">
+    <section className="relative w-full sm:mt-8 flex flex-col items-center max-w-330 sm:px-5 ">
       <div className="relative w-full flex flex-col items-center">
         <Menu />
         <div className="relative w-full mt-7 flex flex-col items-center">
-          <div className="grid justify-items-center">
+          <div className="grid justify-items-center overflow-hidden max-h-[55vh]">
             <div
               className={`text-4xl/snug text-neutral-400 m-4 duration-300 col-start-1 row-start-1 ${phraseCount % 2 ? "opacity-0 pointer-events-none" : ""}`}
             >

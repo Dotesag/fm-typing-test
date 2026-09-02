@@ -38,15 +38,15 @@ export default function Result() {
 
   return (
     <div
-      className={`absolute top-0 h-full w-full flex flex-col items-center pt-5 bg-neutral-900
+      className={`absolute top-0 h-full w-full flex flex-col items-center sm:pt-5 bg-neutral-900
             text-xl duration-200 ${isEnded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
       {!(prevBest != 0 && WPM > prevBest) ? (
         <div
-          className={`p-4 rounded-full bg-green-500/15 ${isEnded ? "animate-pop" : ""}`}
+          className={`sm:p-4 p-2 rounded-full bg-green-500/15 ${isEnded ? "animate-pop" : ""}`}
         >
           <div
-            className={`p-3.5 rounded-full bg-green-500/20 ${isEnded ? "animate-pop" : ""}`}
+            className={`sm:p-3.5 p-1.75 rounded-full bg-green-500/20 ${isEnded ? "animate-pop" : ""}`}
           >
             <Image
               className={`w-14 opacity-100 ${isEnded ? "animate-pop" : ""}`}
@@ -69,15 +69,15 @@ export default function Result() {
         ></Image>
       )}
 
-      <div className="flex flex-col gap-4 my-10 items-center ">
-        <p className="text-4xl font-semibold">
+      <div className="flex flex-col gap-3 sm:gap-4  sm:my-10 my-8 items-center ">
+        <p className="sm:text-4xl text-2xl font-semibold">
           {prevBest == 0
             ? "Baseline established!"
             : prevBest >= WPM
               ? "Test Complete!"
               : "High Score Smashed!"}
         </p>
-        <p className="text-neutral-400">
+        <p className="text-neutral-400 text-base text-center">
           {prevBest == 0
             ? "Youʼve set the bar. Now the real challenge begins—time to beat it."
             : prevBest >= WPM
@@ -86,7 +86,7 @@ export default function Result() {
         </p>
       </div>
 
-      <div className="flex gap-5 mb-10">
+      <div className="flex sm:gap-5 gap-3 mb-10 sm:flex-row flex-col w-full justify-center">
         <div className="result-box">
           <p>WPM:</p>
           <p className="text-neutral-0 font-bold">{Math.round(showedWPM)}</p>
@@ -137,7 +137,7 @@ export default function Result() {
 
       {prevBest >= WPM && (
         <Image
-          className="animate-blink-delayed absolute left-20 top-30 z-1"
+          className="animate-blink-delayed absolute left-7 top-10 z-1 w-6 sm:w-auto"
           src={"/images/pattern-star-2.svg"}
           alt="red-star"
           width={32}
@@ -146,7 +146,7 @@ export default function Result() {
       )}
       {prevBest >= WPM && (
         <Image
-          className="animate-blink absolute right-20 top-100 z-1"
+          className="animate-blink absolute sm:right-20 sm:top-100 right-2 top-150 z-1 w-9  sm:w-auto"
           src={"/images/pattern-star-1.svg"}
           alt="yellow-star"
           width={74}

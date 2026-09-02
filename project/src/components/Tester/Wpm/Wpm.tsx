@@ -58,6 +58,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
       errorsRef.current = [];
       setAccuracy(100);
       clearInterval(timerRef.current);
+
       setTime(0);
       wordsRef.current = 0;
     }
@@ -70,9 +71,10 @@ export default function Wpm({ text, isActive }: WpmProp) {
           wordsRef.current /
             ((performance.now() - startTimeRef.current) / 1000 / 60),
         );
-      }, 1);
+      }, 100);
     }
-  }, [isStarted, isEnded]);
+    return () => clearInterval(timerRef.current);
+  }, [isStarted, isEnded, isActive]);
 
   const handleKeyPress = (event) => {
     if (isActive) {
@@ -148,7 +150,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
   };
 
   return (
-    <p className="whitespace-pre-wrap">
+    <p className="whitespace-pre-wrap sm:text-4xl text-3xl/10">
       {phrase.map((symbol, ind) => (
         <span
           key={ind}
