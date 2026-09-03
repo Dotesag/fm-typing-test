@@ -44,5 +44,5 @@ npm run dev
 The application will be available on the **http://localhost:3000** address.
 
 ### Links
-You can find this solution there: 
-And there: 
+You can find live site there: https://fm-typing-test.vercel.app/
+And there you can find solution on Frontend Mentor: https://www.frontendmentor.io/solutions/typing-speed-test-using-nextjs-trSKAMH5bH
