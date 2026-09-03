@@ -38,7 +38,7 @@ export default function Result() {
 
   return (
     <div
-      className={`absolute top-0 h-full w-full flex flex-col items-center sm:pt-5 bg-neutral-900
+      className={`absolute top-0 h-full w-full flex flex-col items-center sm:pt-5 bg-neutral-900 px-3
             text-xl duration-200 ${isEnded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
       {!(prevBest != 0 && WPM > prevBest) ? (
@@ -135,7 +135,7 @@ export default function Result() {
         </svg>
       </button>
 
-      {prevBest >= WPM && (
+      {(prevBest >= WPM || prevBest == 0) && (
         <Image
           className="animate-blink-delayed absolute left-7 top-10 z-1 w-6 sm:w-auto"
           src={"/images/pattern-star-2.svg"}
@@ -144,7 +144,7 @@ export default function Result() {
           height={32}
         />
       )}
-      {prevBest >= WPM && (
+      {(prevBest >= WPM || prevBest == 0) && (
         <Image
           className="animate-blink absolute sm:right-20 sm:top-100 right-2 top-150 z-1 w-9  sm:w-auto"
           src={"/images/pattern-star-1.svg"}

@@ -48,7 +48,14 @@ export default function Menu() {
 
           <p className="w-37 text-nowrap text-center">
             Accuracy: <br className="lg:hidden" />
-            <span className="text-white font-bold w-2">
+            <span
+              className="font-bold w-2 duration-100"
+              style={{
+                color: !isStarted
+                  ? "white"
+                  : `hsl(${(Math.max(accuracy, 70) - 70) * 4.8666 - 6}, 63%, 57%)`,
+              }}
+            >
               {Math.round(accuracy)}%
             </span>
           </p>
@@ -57,7 +64,15 @@ export default function Menu() {
 
           <p className=" text-center">
             Time: <br className="lg:hidden" />
-            <span className="text-white font-bold">
+            <span
+              className="text-white font-bold duration-100"
+              style={{
+                color:
+                  !isStarted || !(mode === "timed")
+                    ? "white"
+                    : `hsl(${(60 - time / 1000 ) * 2.4333 - 6}, 63%, 57%)`,
+              }}
+            >
               {String(Math.floor(showingTime / 1000 / 60)).padStart(2, "0")}:
               {String(Math.floor((showingTime / 1000) % 60)).padStart(2, "0")}
             </span>
@@ -111,7 +126,11 @@ export default function Menu() {
           <div className="md:hidden flex">
             <div>
               <button
-                onClick={() => setIsDifficultySelectorActive((prev) => !prev)}
+                onClick={() =>
+                  !isStarted
+                    ? setIsDifficultySelectorActive((prev) => !prev)
+                    : null
+                }
                 className="border disabled:cursor-not-allowed rounded-lg w-44 py-1 duration-200 cursor-pointer text-white border-neutral-400 hover:text-blue-400 hover:border-blue-400 flex justify-center items-center gap-2"
               >
                 {difficultyButtons.find((obj) => obj.key === difficulty).name}{" "}
@@ -123,7 +142,7 @@ export default function Menu() {
                 ></Image>
               </button>
               <ul
-                className={`ease-in-out grid ${isDifficultySelectorActive ? "grid-rows-[1fr] leading-6" : "grid-rows-[0fr] pointer-events-none leading-0"} transition-[grid-template-rows] absolute z-50 duration-250 bg-neutral-800 w-44 mt-1.5 rounded-lg`}
+                className={`ease-in-out grid ${isDifficultySelectorActive && !isStarted ? "grid-rows-[1fr] leading-6" : "grid-rows-[0fr] pointer-events-none leading-0"} transition-[grid-template-rows] absolute z-50 duration-250 bg-neutral-800 w-44 mt-1.5 rounded-lg`}
               >
                 <div className="min-h-0 overflow-hidden">
                   {difficultyButtons.map((elem, index) => (
@@ -135,7 +154,13 @@ export default function Menu() {
                           type="radio"
                           name={elem.key}
                           checked={difficulty === elem.key}
-                          onChange={() => setDifficulty(elem.key)}
+                          onChange={() => {
+                            setDifficulty(elem.key);
+                            setTimeout(
+                              () => setIsDifficultySelectorActive(false),
+                              125,
+                            );
+                          }}
                           className={`${isDifficultySelectorActive ? "" : "scale-0 "} appearance-none w-4 h-4 rounded-full border border-white checked:border-blue-400 checked:border-5 duration-250 origin-center`}
                         ></input>
                         <p>{elem.name}</p>
@@ -153,7 +178,9 @@ export default function Menu() {
           <div className="md:hidden flex">
             <div>
               <button
-                onClick={() => setIsModeSelectorActive((prev) => !prev)}
+                onClick={() =>
+                  !isStarted ? setIsModeSelectorActive((prev) => !prev) : null
+                }
                 className="border disabled:cursor-not-allowed rounded-lg w-44 py-1 duration-200 cursor-pointer text-white border-neutral-400 hover:text-blue-400 hover:border-blue-400 flex justify-center items-center gap-2"
               >
                 {modeButtons.find((obj) => obj.key === mode).name}{" "}
@@ -165,7 +192,7 @@ export default function Menu() {
                 ></Image>
               </button>
               <ul
-                className={`ease-in-out grid ${isModeSelectorActive ? "grid-rows-[1fr] leading-6" : "grid-rows-[0fr] pointer-events-none leading-0"} transition-[grid-template-rows] absolute z-50 duration-250 bg-neutral-800 w-44 mt-1.5 rounded-lg`}
+                className={`ease-in-out grid ${isModeSelectorActive && !isStarted ? "grid-rows-[1fr] leading-6" : "grid-rows-[0fr] pointer-events-none leading-0"} transition-[grid-template-rows] absolute z-50 duration-250 bg-neutral-800 w-44 mt-1.5 rounded-lg`}
               >
                 <div className="min-h-0 overflow-hidden">
                   {modeButtons.map((elem, index) => (
@@ -177,7 +204,13 @@ export default function Menu() {
                           type="radio"
                           name={elem.key}
                           checked={mode === elem.key}
-                          onChange={() => setMode(elem.key)}
+                          onChange={() => {
+                            setMode(elem.key);
+                            setTimeout(
+                              () => setIsModeSelectorActive(false),
+                              125,
+                            );
+                          }}
                           className={`${isModeSelectorActive ? "" : "scale-0 "} appearance-none w-4 h-4 rounded-full border border-white checked:border-blue-400 checked:border-5 duration-250 origin-center`}
                         ></input>
                         <p>{elem.name}</p>

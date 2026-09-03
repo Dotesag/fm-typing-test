@@ -75,6 +75,7 @@ export default function Wpm({ text, isActive }: WpmProp) {
           wordsRef.current /
             ((performance.now() - startTimeRef.current) / 1000 / 60),
         );
+        endCheck();
       }, 100);
     }
     return () => clearInterval(timerRef.current);
@@ -102,42 +103,6 @@ export default function Wpm({ text, isActive }: WpmProp) {
               errorsRef.current = [...errorsRef.current, cursorRef.current];
             }
             cursorRef.current += 1;
-            if (
-              cursorRef.current >= phrase.length ||
-              (mode === "timed" &&
-                performance.now() - startTimeRef.current > 60 * 1000)
-            ) {
-              const finalWPM =
-                wordsRef.current /
-                ((performance.now() - startTimeRef.current) / 1000 / 60);
-              setWPM(finalWPM);
-              clearInterval(timerRef.current);
-              try {
-                let localPrevBest = 0;
-                if (localStorage.getItem("personal best")) {
-                  const decryptedStorage = CryptoJS.AES.decrypt(
-                    localStorage.getItem("personal best"),
-                    "SuperSecretKey",
-                  );
-                  localPrevBest =
-                    Number(decryptedStorage.toString(CryptoJS.enc.Utf8)) || 0;
-                }
-                setPrevBest(localPrevBest);
-
-                if (finalWPM > localPrevBest) {
-                  setBestWPM(finalWPM);
-                  const encrypted = CryptoJS.AES.encrypt(
-                    String(finalWPM),
-                    "SuperSecretKey",
-                  ).toString();
-                  localStorage.setItem("personal best", encrypted);
-                }
-              } catch (error) {
-                console.log(error);
-              }
-              setIsStarted(false);
-              setIsEnded(true);
-            }
           }
         }
         if (errorsRef.current && cursorRef.current > 0) {
@@ -150,6 +115,44 @@ export default function Wpm({ text, isActive }: WpmProp) {
         event.preventDefault();
         setIsStarted(true);
       }
+    }
+  };
+
+  const endCheck = () => {
+    if (
+      cursorRef.current >= phrase.length ||
+      (mode === "timed" && performance.now() - startTimeRef.current > 59.990 * 1000)
+    ) {
+      const finalWPM =
+        wordsRef.current /
+        ((performance.now() - startTimeRef.current) / 1000 / 60);
+      setWPM(finalWPM);
+      clearInterval(timerRef.current);
+      try {
+        let localPrevBest = 0;
+        if (localStorage.getItem("personal best")) {
+          const decryptedStorage = CryptoJS.AES.decrypt(
+            localStorage.getItem("personal best"),
+            "SuperSecretKey",
+          );
+          localPrevBest =
+            Number(decryptedStorage.toString(CryptoJS.enc.Utf8)) || 0;
+        }
+        setPrevBest(localPrevBest);
+
+        if (finalWPM > localPrevBest) {
+          setBestWPM(finalWPM);
+          const encrypted = CryptoJS.AES.encrypt(
+            String(finalWPM),
+            "SuperSecretKey",
+          ).toString();
+          localStorage.setItem("personal best", encrypted);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setIsStarted(false);
+      setIsEnded(true);
     }
   };
 
@@ -166,7 +169,6 @@ export default function Wpm({ text, isActive }: WpmProp) {
       cursorSpanRef.current.offsetTop - offsetY >
       containerRef.current.offsetParent.clientHeight / 2
     ) {
-      console.log(offsetY);
       setOffsetY((prev) => prev + cursorSpanRef.current.offsetHeight + 4);
     }
   }, [cursor]);

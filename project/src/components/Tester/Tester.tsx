@@ -37,7 +37,7 @@ export default function Tester() {
   }, [mode, difficulty, isStarted]);
 
   return (
-    <section className="relative w-full sm:mt-8 flex flex-col items-center max-w-330 sm:px-5 ">
+    <section className="relative w-full md:mt-8 flex flex-col items-center max-w-330 md:px-5 ">
       <div className="relative w-full flex flex-col items-center">
         <Menu />
         <div className="relative w-full mt-7 flex flex-col items-center">
