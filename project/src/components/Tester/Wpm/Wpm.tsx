@@ -37,6 +37,10 @@ export default function Wpm({ text, isActive }: WpmProp) {
   const timerRef = useRef<null | NodeJS.Timeout>(null);
   const wordsRef = useRef<number>(0);
 
+  const containerRef = useRef<null | HTMLParagraphElement>(null);
+  const cursorSpanRef = useRef<null | HTMLSpanElement>(null);
+  const [offsetY, setOffsetY] = useState<number>(0);
+
   useEffect(() => {
     if (text) {
       setPhrase(text.split(""));
@@ -149,12 +153,35 @@ export default function Wpm({ text, isActive }: WpmProp) {
     }
   };
 
+  useEffect(() => {
+    const isMobile = window.innerWidth < 640;
+    if (
+      !cursorSpanRef.current ||
+      !containerRef.current ||
+      !isActive ||
+      isMobile
+    )
+      return;
+    if (
+      cursorSpanRef.current.offsetTop - offsetY >
+      containerRef.current.offsetParent.clientHeight / 2
+    ) {
+      console.log(offsetY);
+      setOffsetY((prev) => prev + cursorSpanRef.current.offsetHeight + 4);
+    }
+  }, [cursor]);
+
   return (
-    <p className="whitespace-pre-wrap sm:text-4xl text-3xl/10">
+    <p
+      className="whitespace-pre-wrap sm:text-4xl text-3xl/10 duration-300"
+      ref={containerRef}
+      style={{ transform: `translateY(-${offsetY}px)` }}
+    >
       {phrase.map((symbol, ind) => (
         <span
           key={ind}
           className="p-0.2 rounded-md "
+          ref={ind == cursor ? cursorSpanRef : null}
           style={{
             background: ind == cursor ? "hsl(0 0% 25%)" : "",
             color:

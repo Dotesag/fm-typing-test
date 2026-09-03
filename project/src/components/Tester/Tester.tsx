@@ -43,12 +43,12 @@ export default function Tester() {
         <div className="relative w-full mt-7 flex flex-col items-center">
           <div className="grid justify-items-center overflow-hidden max-h-[55vh]">
             <div
-              className={`text-4xl/snug text-neutral-400 m-4 duration-300 col-start-1 row-start-1 ${phraseCount % 2 ? "opacity-0 pointer-events-none" : ""}`}
+              className={`text-4xl/snug text-neutral-400 m-4 duration-300 col-start-1 row-start-1 overflow-hidden ${phraseCount % 2 ? "opacity-0 pointer-events-none" : ""}`}
             >
               {<Wpm text={phrase[0]} isActive={phraseCount % 2 === 0} />}
             </div>
             <div
-              className={`text-4xl/snug text-neutral-400 m-4 duration-300 col-start-1 row-start-1 ${phraseCount % 2 ? "" : "opacity-0 pointer-events-none"}`}
+              className={`text-4xl/snug text-neutral-400 m-4 duration-300 col-start-1 row-start-1 overflow-hidden ${phraseCount % 2 ? "" : "opacity-0 pointer-events-none"}`}
             >
               {<Wpm text={phrase[1]} isActive={phraseCount % 2 === 1} />}
             </div>
