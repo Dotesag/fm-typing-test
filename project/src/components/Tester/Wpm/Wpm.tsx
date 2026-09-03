@@ -90,6 +90,12 @@ export default function Wpm({ text, isActive }: WpmProp) {
               (a) => a != cursorRef.current - 1,
             );
             cursorRef.current -= 1;
+            if (
+              phrase[cursorRef.current] == " " ||
+              cursorRef.current + 1 == phrase.length
+            ) {
+              wordsRef.current -= 1;
+            }
           }
         } else {
           if (event.key.length == 1) {
@@ -121,7 +127,8 @@ export default function Wpm({ text, isActive }: WpmProp) {
   const endCheck = () => {
     if (
       cursorRef.current >= phrase.length ||
-      (mode === "timed" && performance.now() - startTimeRef.current > 59.990 * 1000)
+      (mode === "timed" &&
+        performance.now() - startTimeRef.current > 59.99 * 1000)
     ) {
       const finalWPM =
         wordsRef.current /

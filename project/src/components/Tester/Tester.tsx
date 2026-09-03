@@ -9,7 +9,7 @@ export default function Tester() {
   const { difficulty, mode, isStarted, setIsStarted, isEnded, setIsEnded } =
     useContext(MainContext);
 
-  const [phrase, setPhrase] = useState<string | any>([]);
+  const [phrase, setPhrase] = useState<string | string[]>([]);
   const [phraseCount, setPhraseCount] = useState(0);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function Tester() {
               text-xl ${!isStarted ? "" : "duration-300"} ${!isStarted && !isEnded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <button
-              className="bg-blue-600 rounded-xl p-3 mb-4 cursor-pointer"
+              className="bg-blue-600 rounded-xl p-3 mb-4 cursor-pointer hover:bg-blue-400 duration-200"
               onClick={() => setIsStarted(true)}
             >
               Start typing test
@@ -75,7 +75,7 @@ export default function Tester() {
           >
             Restart test
             <Image
-              src={"images/icon-restart.svg"}
+              src={"/images/icon-restart.svg"}
               alt="restart"
               width={20}
               height={20}

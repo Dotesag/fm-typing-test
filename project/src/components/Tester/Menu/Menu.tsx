@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from "react";
 import Image from "next/image";
 
 import { MainContext } from "@/components/Mainpage/Mainpage";
-import { timeEnd } from "node:console";
 
 export default function Menu() {
   const {
@@ -38,7 +37,7 @@ export default function Menu() {
       className={`w-full ${!isEnded ? "" : "duration-300 invisible pointer-events-none"}`}
     >
       <div className="flex justify-between items-center mb-3 flex-col lg:flex-row">
-        <div className="text-neutral-500 text-lg lg:flex gap-3 items-center flex lg:pb-0 pb-4">
+        <div className="text-neutral-500 text-lg gap-3 items-center flex lg:pb-0 pb-4">
           <p className="w-20 text-nowrap text-center">
             WPM: <br className="lg:hidden" />
             <span className="text-white font-bold w-2">{Math.round(WPM)}</span>
@@ -70,7 +69,7 @@ export default function Menu() {
                 color:
                   !isStarted || !(mode === "timed")
                     ? "white"
-                    : `hsl(${(60 - time / 1000 ) * 2.4333 - 6}, 63%, 57%)`,
+                    : `hsl(${(60 - time / 1000) * 2.4333 - 6}, 63%, 57%)`,
               }}
             >
               {String(Math.floor(showingTime / 1000 / 60)).padStart(2, "0")}:
@@ -122,7 +121,7 @@ export default function Menu() {
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 md:hidden">
           <div className="md:hidden flex">
             <div>
               <button
